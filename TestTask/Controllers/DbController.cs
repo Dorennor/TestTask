@@ -30,7 +30,7 @@ namespace TestTask.Controllers
         }
 
         // GET: api/[controller]/id
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<TEntity>> Get(Guid id)
         {
             var person = await _repository.Get(id);
@@ -42,7 +42,7 @@ namespace TestTask.Controllers
         }
 
         // PUT: api/[controller]/id
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> Put(Guid id, TEntity person)
         {
             if (id != person.Id)
@@ -62,7 +62,7 @@ namespace TestTask.Controllers
         }
 
         // DELETE: api/[controller]/id
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult<TEntity>> Delete(Guid id)
         {
             var person = await _repository.Delete(id);
