@@ -6,17 +6,16 @@ using TestTask.Models;
 
 namespace TestTask.Data
 {
-    public abstract class EfCoreRepository<TEntity, TContext> : IRepository<TEntity>
-        where TEntity : class, IEntity
-        where TContext : DbContext
+    public class MsSqlRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        private readonly TContext _context;
-        private bool _disposed = false;
+        private readonly ApplicationContext _context;
+        private bool _disposed;
 
-        protected EfCoreRepository(TContext context)
+        public MsSqlRepository(ApplicationContext context)
         {
             _context = context;
         }
+
         public async Task<TEntity> Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
@@ -27,10 +26,7 @@ namespace TestTask.Data
         public async Task<TEntity> Delete(Guid id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
-            if (entity == null)
-            {
-                return null;
-            }
+            if (entity == null) return null;
 
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
@@ -61,19 +57,16 @@ namespace TestTask.Data
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    _context?.Dispose();
-                }
+                if (disposing) _context?.Dispose();
                 _disposed = true;
             }
         }
 
-        ~EfCoreRepository()
+        ~MsSqlRepository()
         {
             Dispose(false);
         }

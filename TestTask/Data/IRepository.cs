@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TestTask.Data
 {
-    public interface IRepository<T> : IDisposable where T: class, IEntity
+    public interface IRepository<T> : IDisposable
     {
         Task<List<T>> GetAll();
         Task<T> Get(Guid id);

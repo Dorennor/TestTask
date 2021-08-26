@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-
 
 namespace TestTask.Models
 {
     public class ApplicationContext : DbContext
     {
+        public ApplicationContext(DbContextOptions options) : base(options)
+        {
+        }
+
         public DbSet<Person> Persons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,11 +28,6 @@ namespace TestTask.Models
                     LastName = "Rud"
                 }
             );
-        }
-
-        public ApplicationContext(DbContextOptions options) : base(options)
-        {
-
         }
     }
 }
